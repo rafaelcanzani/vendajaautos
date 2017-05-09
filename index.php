@@ -109,22 +109,141 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		    </div>
 		</div>
 
-		<section>
-			<div class="section-banner" style="padding-top: 4em; background-image: url(assets/img/banner1.png); background-size: cover; background-position: center;">
-				<div class="container">
-					<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 5.5em;">
-						<div class="col-md-6 col-sm-12 col-xs-12" style="padding-top: 3em;">
-							<h3 style="color:white;">Faremos a</h3>
-							<h1 style="color:white; font-weight: 800;">MELHOR AVALIAÇÃO</h1>
-							<h3 style="color:white;">do seu veículo em apenas 15 minutos!</h3>
-							<a href="lead-cotacao-gratis.php"><button style="background-image: url(assets/img/btnCadastro.png) !important; background-position: center; background-size: contain; border-radius: 0; color:white; padding-top: 1em;padding-bottom: 1em; font-size: 2rem; font-weight: 900; width: 80%;" class="btn btn default">COTAÇÃO GRÁTIS</button></a>
-						</div>
+		<section class="hidden-sm hidden-xs">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			  <div class="carousel-inner">
+			    <div class="item active carousel-banner" style="padding-top:5em; background-image: url(assets/img/bg/slide_01.png); background-size: cover; background-position: center;">
+			    	<div class="container">
+						<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:5.1em; margin-bottom: 3.7em;" >
+							<div class="col-md-6 col-sm-12 col-xs-12">
+							<h3 style="color:white; font-family:'Helvetica Neue Light', sans-serif; padding-top: 2em;">Venda seu carro</h3>
+							<h1 style="color:white; font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; ">EM ATÉ 1H!</h1>
+							<a href="lead-cotacao-gratis.php"><button style="background-image: url(assets/img/btnCadastro.png) !important; background-position: center; background-size: contain; border-radius: 0; color:white; padding-top: 1em;padding-bottom: 1em; font-size: 2rem; font-weight: 900; width: 80%;" class="btn btn default">VENDER MEU CARRO!</button></a>
+							</div>
 
-						<div class="col-md-6 col-sm-12 col-xs-12">
-							<iframe width="100%" height="315" src="https://www.youtube.com/embed/PgX-fii2YaM" frameborder="0" allowfullscreen></iframe>
+							<div class="col-md-6 col-sm-12 col-xs-12" >
+								<iframe width="100%" height="315" src="https://www.youtube.com/embed/PgX-fii2YaM" frameborder="0" allowfullscreen></iframe>
+							</div>
 						</div>
 					</div>
-				</div>
+			    </div>
+
+			    <div class="item carousel-banner" style="padding-top:5em; background-image: url(assets/img/bg/slide_02.png); background-size: cover; background-position: center;">
+			    	<div class="container">
+						<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 1.5em;">
+							<div class="col-md-6 col-sm-12 col-xs-12 hidden-sm hidden-xs">
+								<h3 class="" style="font-family:'Helvetica Neue', sans-serif; color:white; padding-top: 4em;">Dinheiro rápido!</h3>
+								<h3 style="font-family:'Helvetica Neue Light', sans-serif; color:white;">Venda seu carro.</h3>
+								<h1 style="font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; color:white; ">EM ATÉ 1 HORA!</h1>
+							</div>
+							<div class="col-md-6 col-sm-12 col-xs-12 hidden-md hidden-lg" style="margin-top: 3em;">
+								<h3 class="" style="font-family:'Helvetica Neue', sans-serif; color:white; padding-top: 4em;">Dinheiro rápido!<Br />Venda seu carro.</h3>
+								<h1 style="font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; color:white; ">EM ATÉ 1 HORA!</h1>
+							</div>
+
+							<div class="col-md-6 col-sm-12 col-xs-12">
+								<div class="max-widht2" style="max-width: 410px; margin:0 auto; margin-top: 1.5em;padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 2em; background-color: #3385d9;">
+									<form action="" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="CARRO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MODELO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="ANO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="KM">
+										</div>
+										<div class="form-group" style="margin-bottom: 6px !important;">
+											<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" class="btn btn-default">CADASTRAR-SE</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+			  </div>
+
+			  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+			  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			    <span class="sr-only">Next</span>
+			  </a>
+			</div>
+		</section>
+
+		<section class="hidden-lg hidden-md text-center">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			  <div class="carousel-inner">
+			    <div class="item  carousel-banner" style="padding-top:5em; background-image: url(assets/img/bg/slide_01.png); background-size: cover; background-position: center;">
+			    	<div class="container">
+						<div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3.7em;" >
+							<div class="col-md-6 col-sm-12 col-xs-12">
+							<h3 style="color:white; font-family:'Helvetica Neue Light', sans-serif; padding-top: 1em;">Venda seu carro</h3>
+							<h1 style="color:white; font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; ">EM ATÉ 1H!</h1>
+							<a href="lead-cotacao-gratis.php"><button style="background-image: url(assets/img/btnCadastro.png) !important; background-position: center; background-size: contain; border-radius: 0; color:white; padding-top: 1em;padding-bottom: 1em; font-size:1.6rem; font-weight: 900; width: 100%; margin-bottom: 1em;" class="btn btn default">VENDER MEU CARRO!</button></a>
+							</div>
+
+							<div class="col-md-6 col-sm-12 col-xs-12" >
+								<iframe width="100%" height="315" src="https://www.youtube.com/embed/PgX-fii2YaM" frameborder="0" allowfullscreen></iframe>
+							</div>
+						</div>
+					</div>
+			    </div>
+
+			    <div class="item active carousel-banner" style="padding-top:5em; background-image: url(assets/img/bg/slide_02.png); background-size: cover; background-position: center;">
+			    	<div class="container">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-6 col-sm-12 col-xs-12 hidden-sm hidden-xs">
+								<h3 class="" style="font-family:'Helvetica Neue', sans-serif; color:white;">Dinheiro rápido!</h3>
+								<h3 style="font-family:'Helvetica Neue Light', sans-serif; color:white;">Venda seu carro.</h3>
+								<h1 style="font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; color:white; ">EM ATÉ 1 HORA!</h1>
+							</div>
+							<div class="col-md-6 col-sm-12 col-xs-12 hidden-md hidden-lg" style="margin-top: 3em;">
+								<h3 class="" style="font-family:'Helvetica Neue', sans-serif; color:white; padding-top: 0em;">Dinheiro rápido!<Br />Venda seu carro.</h3>
+								<h1 style="font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; color:white; ">EM ATÉ 1 HORA!</h1>
+							</div>
+
+							<div class="col-md-6 col-sm-12 col-xs-12">
+								<div class="max-widht2" style="max-width: 410px; margin:0 auto; margin-top: 1.5em;padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 2em; background-color: #3385d9;">
+									<form action="" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="CARRO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MODELO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="ANO">
+										</div>
+										<div class="form-group">
+											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="KM">
+										</div>
+										<div class="form-group" style="margin-bottom: 6px !important;">
+											<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" class="btn btn-default">CADASTRAR-SE</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			    </div>
+			  </div>
+
+			  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+			  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			    <span class="sr-only">Next</span>
+			  </a>
 			</div>
 		</section>
 		

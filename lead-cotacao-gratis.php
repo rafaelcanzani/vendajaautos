@@ -152,11 +152,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		
 		</div>
 
-	<div class="section-cadastrado" style="padding-top: 7em; background-image: url(assets/img/bgCadastrado.png); background-size: cover; background-position: center;">
+	<div class="section-cadastrado" style="padding-top: 7em; background-image: url(assets/img/bg/slide_04.png); background-size: cover; background-position: center;">
 		<div class="container">
 			<div class="col-md-12">
 				<h2 style="color:white; font-family:'Helvetica Neue', sans-serif; line-height: 0.5" class="text-center">Venda seu carro em</h2>
-				<h1 style="color:white; font-weight: 800; font-family:'Helvetica Neue Bold', sans-serif;" class="text-center">ATÉ 1H!</h1>
+				<h1 style="color:white; font-weight: 800; font-family:'Helvetica Neue Bold', sans-serif;" class="text-center">EM 15 MINUTOS!</h1>
 			</div>
 			
 			<div class="col-md-12">
@@ -186,7 +186,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					
 					<form id="frm_cotacao" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
 						<div class="text-center">
-							Você receberá em até  <b>1 HORA</b> uma cotação <b>GRATUITA</b> considerando o veículo em bom estado de conservação e sem avarias.
+							Você receberá em <b>15 minutos</b> uma cotação <b>GRATUITA</b> considerando o veículo em bom estado de conservação e sem avarias.
 							</br>
 							Veículos a partir de 2008.
 						</div>
@@ -287,6 +287,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</div>
 						<div class="form-group">
 							<input required type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="telefone" id="telefone" class="form-control" placeholder="TELEFONE / WHATSAPP">
+							<script type="text/javascript">
+                                    jQuery(function($) {
+                                          $("#telefone").mask("(99) 9999-9999?9");
+                                          $("#telefone").blur(function(event) {
+                                              if($(this).val().length == 15){
+                                                $('#telefone').mask('(99) 99999-999?9');
+                                              } else {
+                                                $('#telefone').mask('(99) 9999-9999?9');
+                                              }
+                                          });
+                                       });
+                                </script>
 						</div>
 						<div class="form-group text-center">
 							Quero receber a proposta por: 
@@ -359,6 +371,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 </div>
 
+<script src="assets/js/jquery.maskedinput.js" type="text/javascript"></script>
 <!-- BEGIN CORE JS FRAMEWORK --> 	
 <script type="text/javascript" src="assets/plugins/jquery-1.8.3.min.js"></script>	
 <script src="assets/plugins/boostrapv3/js/bootstrap.min.js" type="text/javascript"></script>

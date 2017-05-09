@@ -2799,6 +2799,21 @@ margin-bottom:0px;
 	.section-banner iframe{
 
 		width: 100% !important;
+		margin-top: 2em !important;
+	}
+	/*CARROUSEL*/
+	.carousel-banner{
+		padding-top: 0em !important;
+		text-align: center;
+		color:white;
+	}
+	.carousel-banner h3{
+		padding-top: 1em !important;
+		text-align: center;
+	}
+	.carousel-banner button{
+		margin-bottom: 1em !important;
+		font-size: 1.6rem !important;
 	}
 }
 
