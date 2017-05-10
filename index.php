@@ -1,4 +1,35 @@
-<?php require_once('header.php'); ?>
+<?php 
+date_default_timezone_set('America/Sao_Paulo');
+
+	include('/include/util.php');
+
+	$editar = false;
+	$resultado = new Resultado();
+	$veiculo = new Veiculo();
+	$anuncio = new Anuncio();
+	$fabricantes = null;
+
+
+	try 
+	{
+		$resultado = $veiculo->SelecionarFabricanteFIPE();
+		if($resultado->Sucesso)
+		{
+			$fabricantes = $resultado->Retorno;
+		}
+		
+		$totalFabricantes = count(array_filter($fabricantes));	
+		
+	}
+	catch (\Exception $e) 
+	{
+		LogarExcecao($e);
+		$resultado->Sucesso = false;
+		$resultado->Mensagem = 'Falha na tentativa de carregar a página.';
+		$resultado->MensagemInterna = $e->getMessage();
+	}
+	require_once('header.php'); 
+?>
 		<section class="hidden-sm hidden-xs">
 			<div id="myCarousel" class="carousel slide"   data-interval="80000" data-ride="carousel">
 			  <div class="carousel-inner">
@@ -33,23 +64,87 @@
 
 							<div class="col-md-6 col-sm-12 col-xs-12">
 								<div class="max-widht2" style="max-width: 410px; margin:0 auto; margin-top: 1.5em;padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 2em; background-color: #3385d9;">
-									<form action="" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="CARRO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MODELO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="ANO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="KM">
-										</div>
-										<div class="form-group" style="margin-bottom: 6px !important;">
-											<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" class="btn btn-default">CADASTRAR-SE</button>
-										</div>
-									</form>
+									<form method="post" action="lead-cotacao-gratis.php" id="frm_cotacao" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
+												<div class="form-group">
+													<select name="fabricante" id="fabricante"  style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MARCA"  onChange="getAno_2(this.value)" autocomplete="off" data-role="none" data-native-menu="false" style="z-index:99999999999999; height:35px; -webkit-appearance: listbox;">
+														<option value="0">MARCA</option>
+														<?php
+															if($totalFabricantes > 0)
+															{
+																foreach ($fabricantes as &$fabricante) 
+																{
+																	echo $fabricante->Nome . '<br/>';
+														?>
+																	<option value="<?php echo $fabricante->CodigoFIPE;?>" <?php echo (($editar and $anuncio->Veiculo->Fabricante->VeiculoFabricanteId == $fabricante->CodigoFIPE) ? 'selected':'') ?> >
+																		<?php echo $fabricante->Nome;?>
+																	</option>
+														<?php	}
+															}
+														?>
+													</select>
+												</div>
+												<div class="form-group" id="ano_container">
+													<?php
+														if($editar and $totalAnosFIPE > 0)
+														{
+															echo '<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="ANO" style="margin-top:10px" onChange="getModelo_2(this.options[this.selectedIndex].innerHTML,'.$anuncio->Veiculo->Fabricante->VeiculoFabricanteId.')">';
+															echo '<option value="0">Escolha um ano</option>';
+
+															foreach($anosFIPE as &$ano)
+															{
+																$anoSelecionado = false;
+																if($ano->AnoModelo == $anuncio->Veiculo->AnoModelo and $ano->Combustivel->Nome == $anuncio->Veiculo->Combustivel->NomeFIPE)
+																	$anoSelecionado = true;
+																echo '<option value="'.$ano->AnoModelo.'-'.$ano->Combustivel->Nome.'"' . ($anoSelecionado ? ' selected ':'') . ' >'.str_replace('32000','Zero KM',$ano->AnoModelo).' '.$ano->Combustivel->Nome.'  </option>';
+															}
+															echo ' </select>';
+														}
+														else 
+														{
+													?>
+															<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Ano"   autocomplete="off" style="margin-top:10px" data-role="none">
+																<option value="">
+																	ANO
+																</option>
+															</select>
+													<?php
+														}
+													?>
+												</div>
+												
+												<div class="form-group" id="modelo_container">
+												<?php
+													if($editar and $totalModelosFIPE > 0)
+													{
+														echo '<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control"  onChange="" placeholder="Modelo" style="margin-top:10px">';
+														echo '<option value="0">Escolha um modelo</option>';		
+														foreach($modelosFIPE as &$modelo)
+														{
+															//echo  $anuncio->Veiculo->Modelo->VeiculoModeloId . ' <---> ' . $modelo->VeiculoModeloId . '<br/>';
+															$modeloSelecionado = false;
+															if($anuncio->Veiculo->Modelo->VeiculoModeloId == $modelo->VeiculoModeloId)
+																$modeloSelecionado = true;
+															echo '<option value="'.$modelo->VeiculoModeloId.'"' . ($modeloSelecionado ? ' selected ':'')  .   '>'.$modelo->Nome.'  </option>';
+														}
+														echo ' </select>';
+													}
+													else 
+													{
+												?>
+														<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Modelo" autocomplete="off" style="margin-top:10px" data-role="none">
+															<option value="">MODELO</option>
+														</select>
+												<?php
+													}
+												?>
+												</div>
+												<div class="form-group">
+													<input required type="number" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="km" id="km" class="form-control" placeholder="KM">
+												</div>
+											<div class="form-group" style="margin-bottom: 6px !important;">
+												<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" id="botao-cadastrar">CADASTRAR-SE</button>
+											</div>
+										</form>
 								</div>
 							</div>
 						</div>
@@ -102,23 +197,87 @@
 
 							<div class="col-md-6 col-sm-12 col-xs-12">
 								<div class="max-widht2" style="max-width: 410px; margin:0 auto; margin-top: 1.5em;padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 2em; background-color: #3385d9;">
-									<form action="" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="CARRO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MODELO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="ANO">
-										</div>
-										<div class="form-group">
-											<input type="text" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  class="form-control" placeholder="KM">
-										</div>
-										<div class="form-group" style="margin-bottom: 6px !important;">
-											<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" class="btn btn-default">CADASTRAR-SE</button>
-										</div>
-									</form>
+									<form method="post" action="lead-cotacao-gratis.php" id="frm_cotacao" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
+												<div class="form-group">
+													<select name="fabricante" id="fabricante"  style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MARCA"  onChange="getAno_2(this.value)" autocomplete="off" data-role="none" data-native-menu="false" style="z-index:99999999999999; height:35px; -webkit-appearance: listbox;">
+														<option value="0">MARCA</option>
+														<?php
+															if($totalFabricantes > 0)
+															{
+																foreach ($fabricantes as &$fabricante) 
+																{
+																	echo $fabricante->Nome . '<br/>';
+														?>
+																	<option value="<?php echo $fabricante->CodigoFIPE;?>" <?php echo (($editar and $anuncio->Veiculo->Fabricante->VeiculoFabricanteId == $fabricante->CodigoFIPE) ? 'selected':'') ?> >
+																		<?php echo $fabricante->Nome;?>
+																	</option>
+														<?php	}
+															}
+														?>
+													</select>
+												</div>
+												<div class="form-group" id="ano_container">
+													<?php
+														if($editar and $totalAnosFIPE > 0)
+														{
+															echo '<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="ANO" style="margin-top:10px" onChange="getModelo_2(this.options[this.selectedIndex].innerHTML,'.$anuncio->Veiculo->Fabricante->VeiculoFabricanteId.')">';
+															echo '<option value="0">Escolha um ano</option>';
+
+															foreach($anosFIPE as &$ano)
+															{
+																$anoSelecionado = false;
+																if($ano->AnoModelo == $anuncio->Veiculo->AnoModelo and $ano->Combustivel->Nome == $anuncio->Veiculo->Combustivel->NomeFIPE)
+																	$anoSelecionado = true;
+																echo '<option value="'.$ano->AnoModelo.'-'.$ano->Combustivel->Nome.'"' . ($anoSelecionado ? ' selected ':'') . ' >'.str_replace('32000','Zero KM',$ano->AnoModelo).' '.$ano->Combustivel->Nome.'  </option>';
+															}
+															echo ' </select>';
+														}
+														else 
+														{
+													?>
+															<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Ano"   autocomplete="off" style="margin-top:10px" data-role="none">
+																<option value="">
+																	ANO
+																</option>
+															</select>
+													<?php
+														}
+													?>
+												</div>
+												
+												<div class="form-group" id="modelo_container">
+												<?php
+													if($editar and $totalModelosFIPE > 0)
+													{
+														echo '<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control"  onChange="" placeholder="Modelo" style="margin-top:10px">';
+														echo '<option value="0">Escolha um modelo</option>';		
+														foreach($modelosFIPE as &$modelo)
+														{
+															//echo  $anuncio->Veiculo->Modelo->VeiculoModeloId . ' <---> ' . $modelo->VeiculoModeloId . '<br/>';
+															$modeloSelecionado = false;
+															if($anuncio->Veiculo->Modelo->VeiculoModeloId == $modelo->VeiculoModeloId)
+																$modeloSelecionado = true;
+															echo '<option value="'.$modelo->VeiculoModeloId.'"' . ($modeloSelecionado ? ' selected ':'')  .   '>'.$modelo->Nome.'  </option>';
+														}
+														echo ' </select>';
+													}
+													else 
+													{
+												?>
+														<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Modelo" autocomplete="off" style="margin-top:10px" data-role="none">
+															<option value="">MODELO</option>
+														</select>
+												<?php
+													}
+												?>
+												</div>
+												<div class="form-group">
+													<input required type="number" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="km" id="km" class="form-control" placeholder="KM">
+												</div>
+											<div class="form-group" style="margin-bottom: 6px !important;">
+												<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" id="botao-cadastrar">CADASTRAR-SE</button>
+											</div>
+										</form>
 								</div>
 							</div>
 						</div>
@@ -258,5 +417,14 @@
 		$(document).ready(function(){
 		    $('[data-toggle="tooltip"]').tooltip();   
 		});
+		function getAno_2(valor)
+		{
+			$("#ano_container").load("./lead-cotacao-gratis-pega-ano.php",{id:valor});
+		};
+		
+		function getModelo_2(ano,marca)
+		{
+			$("#modelo_container").load("./lead-cotacao-gratis-pega-modelo.php",{ano:ano,marca:marca});
+		};
 	</script>
 </body>

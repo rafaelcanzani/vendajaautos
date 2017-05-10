@@ -8,8 +8,13 @@ date_default_timezone_set('America/Sao_Paulo');
 	$veiculo = new Veiculo();
 	$anuncio = new Anuncio();
 	$fabricantes = null;
-
-
+	$anosCombustiveis = null;
+	$modelos = null;
+	$totalAnosCombustiveis = 0;
+	$totalModelos = 0;
+	$anoDoPost = 0;
+	$combustivelDoPost = '';
+	
 	try 
 	{
 		$resultado = $veiculo->SelecionarFabricanteFIPE();
@@ -20,6 +25,29 @@ date_default_timezone_set('America/Sao_Paulo');
 		
 		$totalFabricantes = count(array_filter($fabricantes));	
 		
+		$fabricanteId = isset($_POST['fabricante']) ? $_POST['fabricante']:0;
+		$anoCombustivel = isset($_POST['ano']) ? $_POST['ano']:'';
+		$modeloId = isset($_POST['modelo']) ? $_POST['modelo']:0;
+		$km = isset($_POST['km']) ? $_POST['km']:'';
+		
+		if($fabricanteId > 0)
+		{
+			$veiculo->Fabricante->CodigoFIPE = $fabricanteId;
+			$resultado = $veiculo->SelecionarAnoFIPE();
+			$anosCombustiveis = $resultado->Retorno;
+			$totalAnosCombustiveis = count(array_filter($anosCombustiveis));
+			if($anoCombustivel !== '' and $anoCombustivel != '0')
+			{
+				$anoCombustivelArray = explode('-',$anoCombustivel);
+				$anoDoPost = $anoCombustivelArray[0];
+				$combustivelDoPost = $anoCombustivelArray[1];
+				$veiculo->AnoModelo=$anoDoPost;
+				$veiculo->Combustivel->Nome = $combustivelDoPost;
+				$resultado = $veiculo->SelecionarModeloFIPE('porMarcaAnoCombustivel');
+				$modelos = $resultado->Retorno;
+				$totalModelos = count(array_filter($modelos));
+			}
+		}
 	}
 	catch (\Exception $e) 
 	{
@@ -157,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			
 			<div class="col-md-12">
 				<div class="max-widht2" style="max-width: 410px; margin:0 auto; padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 2em; background-color: #3385d9;">
-					<div id="div_sucesso">
+					<div id="div_sucesso" style="display:none;">
 						<div style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
 							<div class="text-center">
 								<img src="assets/img/logo-cinza.png" alt="" data-src="assets/img/logo-horizontal.png" data-src-retina="assets/img/logo-cinza.png">
@@ -195,9 +223,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 									{
 										foreach ($fabricantes as &$fabricante) 
 										{
+											$fabricanteSelecionado = false;
+											if($fabricanteId == $fabricante->CodigoFIPE)
+												$fabricanteSelecionado = true;
 											echo $fabricante->Nome . '<br/>';
 								?>
-											<option value="<?php echo $fabricante->CodigoFIPE;?>" <?php echo (($editar and $anuncio->Veiculo->Fabricante->VeiculoFabricanteId == $fabricante->CodigoFIPE) ? 'selected':'') ?> >
+											<option value="<?php echo $fabricante->CodigoFIPE;?>" <?php echo ($fabricanteSelecionado ? 'selected':'') ?> >
 												<?php echo $fabricante->Nome;?>
 											</option>
 								<?php	}
@@ -207,15 +238,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</div>
 						<div class="form-group" id="ano_container">
 							<?php
-								if($editar and $totalAnosFIPE > 0)
+								if($totalAnosCombustiveis > 0)
 								{
-									echo '<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="ANO" style="margin-top:10px" onChange="getModelo_2(this.options[this.selectedIndex].innerHTML,'.$anuncio->Veiculo->Fabricante->VeiculoFabricanteId.')">';
+									echo '<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="ANO" style="margin-top:10px" onChange="javascript:getModelo_2();">';
 									echo '<option value="0">Escolha um ano</option>';
 
-									foreach($anosFIPE as &$ano)
+									foreach($anosCombustiveis as &$ano)
 									{
 										$anoSelecionado = false;
-										if($ano->AnoModelo == $anuncio->Veiculo->AnoModelo and $ano->Combustivel->Nome == $anuncio->Veiculo->Combustivel->NomeFIPE)
+										if($ano->AnoModelo == $anoDoPost and $ano->Combustivel->Nome == $combustivelDoPost)
 											$anoSelecionado = true;
 										echo '<option value="'.$ano->AnoModelo.'-'.$ano->Combustivel->Nome.'"' . ($anoSelecionado ? ' selected ':'') . ' >'.str_replace('32000','Zero KM',$ano->AnoModelo).' '.$ano->Combustivel->Nome.'  </option>';
 									}
@@ -240,15 +271,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						
 						<div class="form-group" id="modelo_container">
 						<?php
-							if($editar and $totalModelosFIPE > 0)
+							if($totalModelos > 0)
 							{
 								echo '<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control"  onChange="" placeholder="Modelo" style="margin-top:10px">';
 								echo '<option value="0">Escolha um modelo</option>';		
-								foreach($modelosFIPE as &$modelo)
+								foreach($modelos as &$modelo)
 								{
 									//echo  $anuncio->Veiculo->Modelo->VeiculoModeloId . ' <---> ' . $modelo->VeiculoModeloId . '<br/>';
 									$modeloSelecionado = false;
-									if($anuncio->Veiculo->Modelo->VeiculoModeloId == $modelo->VeiculoModeloId)
+									if($modeloId == $modelo->VeiculoModeloId)
 										$modeloSelecionado = true;
 									echo '<option value="'.$modelo->VeiculoModeloId.'"' . ($modeloSelecionado ? ' selected ':'')  .   '>'.$modelo->Nome.'  </option>';
 								}
@@ -273,7 +304,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</div>
 						
 						<div class="form-group">
-							<input required type="number" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="km" id="km" class="form-control" placeholder="KM">
+							<input required type="number" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="km" id="km" class="form-control" placeholder="KM" value="<?php echo $km; ?>">
 						</div>
 						<div class="form-group">
 							<input required type="text"  style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="nome" id="nome" class="form-control" placeholder="NOME">
@@ -423,9 +454,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		
 		
 		$("#div_sucesso").hide();
-		$("#ano_container").hide();
+		<?php if($totalAnosCombustiveis == 0) { ?>
+			$("#ano_container").hide();
+		<?php } ?>
 		$("#div_carregando").hide();
+		<?php if($totalModelos == 0) { ?>
 		$("#modelo_container").hide();
+		<?php } ?>
     });
 	
 	
@@ -440,9 +475,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	};
 	
 	
-	function getModelo_2(ano,marca)
+	function getModelo_2()
 	{
 		$("#div_carregando").show();
+		var ano = $( "#ano option:selected" ).text();
+		var marca = $("#fabricante").val();
 		$("#modelo_container").load("./lead-cotacao-gratis-pega-modelo.php",{ano:ano,marca:marca});
 		$("#div_carregando").hide();
 		$("#modelo_container").show();
