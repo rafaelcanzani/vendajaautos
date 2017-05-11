@@ -1,5 +1,9 @@
 <?php 
-date_default_timezone_set('America/Sao_Paulo');
+
+	$paginaAtual = 1;
+	include('home-cookie.php');
+	
+	date_default_timezone_set('America/Sao_Paulo');
 
 	include('/include/util.php');
 
