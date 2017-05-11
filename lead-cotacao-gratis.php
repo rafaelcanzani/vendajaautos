@@ -106,25 +106,7 @@ date_default_timezone_set('America/Sao_Paulo');
 <link rel="stylesheet" href="web-app/upload/css/jquery.fileupload.css">
 
 <style>
-	::-webkit-input-placeholder {
-		   text-align: center;
-		   font-family: "Lato",sans-serif;
-		}
 
-		:-moz-placeholder { /* Firefox 18- */
-		   text-align: center;  
-		   font-family: "Lato",sans-serif;
-		}
-
-		::-moz-placeholder {  /* Firefox 19+ */
-		   text-align: center; 
-		   font-family: "Lato",sans-serif; 
-		}
-
-		:-ms-input-placeholder {  
-		   text-align: center;
-		   font-family: "Lato",sans-serif; 
-		}
 </style>
 
 <!-- END CORE CSS FRAMEWORK -->

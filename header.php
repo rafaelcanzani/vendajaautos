@@ -44,7 +44,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/plugins/rs-plugin/css/settings.css" media="screen" />
 
 	<!-- BEGIN CORE CSS FRAMEWORK -->
-	<link href="assets/plugins/boostrapv3/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+	<link href="assets/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="assets/plugins/boostrapv3/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
 	<link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 	<!-- END CORE CSS FRAMEWORK -->

@@ -172,7 +172,7 @@
 										?>
 									</select>
 								</div>
-								<div class="form-group" id="ano_container">
+								<div class="form-group" id="ano_container1">
 									<?php
 										if($editar and $totalAnosFIPE > 0)
 										{
@@ -201,7 +201,7 @@
 									?>
 								</div>
 								
-								<div class="form-group" id="modelo_container">
+								<div class="form-group" id="modelo_container1">
 								<?php
 									if($editar and $totalModelosFIPE > 0)
 									{
@@ -365,11 +365,13 @@
 		function getAno_2(valor)
 		{
 			$("#ano_container").load("./lead-cotacao-gratis-pega-ano.php",{id:valor});
+			$("#ano_container1").load("./lead-cotacao-gratis-pega-ano.php",{id:valor});
 		};
 		
 		function getModelo_2(ano,marca)
 		{
 			$("#modelo_container").load("./lead-cotacao-gratis-pega-modelo.php",{ano:ano,marca:marca});
+			$("#modelo_container1").load("./lead-cotacao-gratis-pega-modelo.php",{ano:ano,marca:marca});
 		};
 	</script>
 </body>
