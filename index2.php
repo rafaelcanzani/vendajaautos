@@ -1,44 +1,108 @@
 <?php 
-$paginaAtual = 2;
+$paginaAtual = 1;
 include('home-cookie.php');
 date_default_timezone_set('America/Sao_Paulo');
 require_once('header.php'); ?>
-
-	<section class="hidden-sm hidden-xs ">
-		 <div class="banner_01" style="padding-top:5em; background-image: url(assets/img/bg/slide_01.png); background-size: cover; background-position: center;">
-	    	<div class="container">
-				<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:5.1em; margin-bottom: 3.7em;" >
+	 
+	<img src="assets/img/vendabanner-1.png" class="img-responsive mauto" alt="" style="margin-top: 5.7em;" width="100%">
+	<section style="background-image: url(assets/img/banner02.png); background-position: center; background-size: cover;">
+		
+			<div class="container">
+				<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:1em; margin-bottom: 3.7em;" >
 					<div class="col-md-6 col-sm-12 col-xs-12">
-						<h3 style="color:white; font-family:'Helvetica Neue Light', sans-serif; padding-top: 2em;">Venda seu carro</h3>
-						<h1 style="color:white; font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; ">EM ATÉ 1H!</h1>
-						<a href="lead-cotacao-gratis.php"><button style="background-image: url(assets/img/btnCadastro.png) !important; background-position: center; background-size: contain; border-radius: 0; color:white; padding-top: 1em;padding-bottom: 1em; font-size: 2rem; font-weight: 900; width: 80%;" class="btn btn default">VENDER MEU CARRO!</button></a>
+						<h1 style="color:#fff600; font-weight: 800; padding-top: 1em;">VÁRIAS LOJAS<br />ESPERANDO PARA<br />COMPRAR O SEU CARRO!</h1><br />
+						<h3 style="color:white;">MAIS SEGURANÇA<br />MAIS RAPIDEZ: VENDA JÁ.</h3>
 					</div>
 
-					<div class="col-md-6 col-sm-12 col-xs-12" >
-						<iframe width="100%" height="315" src="https://www.youtube.com/embed/PgX-fii2YaM" frameborder="0" allowfullscreen></iframe>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+					<div class="max-widht2" style="max-width: 410px; margin:0 auto; margin-top: 1em;padding-top: 0.4em; padding-bottom: 1px !important; margin-bottom: 0em; background-color: #3385d9;">
+						<form method="post" action="lead-cotacao-gratis.php" id="frm_cotacao" style="max-width:400px; margin:0 auto; background-color: white; padding-top: 2em;">
+							<div class="form-group">
+								<select name="fabricante" id="fabricante"  style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="MARCA"  onChange="getAno_2(this.value)" autocomplete="off" data-role="none" data-native-menu="false" style="z-index:99999999999999; height:35px; -webkit-appearance: listbox;">
+									<option value="0">MARCA</option>
+									<?php
+										if($totalFabricantes > 0)
+										{
+											foreach ($fabricantes as &$fabricante) 
+											{
+												echo $fabricante->Nome . '<br/>';
+									?>
+												<option value="<?php echo $fabricante->CodigoFIPE;?>" <?php echo (($editar and $anuncio->Veiculo->Fabricante->VeiculoFabricanteId == $fabricante->CodigoFIPE) ? 'selected':'') ?> >
+													<?php echo $fabricante->Nome;?>
+												</option>
+									<?php	}
+										}
+									?>
+								</select>
+							</div>
+							<div class="form-group" id="ano_container">
+								<?php
+									if($editar and $totalAnosFIPE > 0)
+									{
+										echo '<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="ANO" style="margin-top:10px" onChange="getModelo_2(this.options[this.selectedIndex].innerHTML,'.$anuncio->Veiculo->Fabricante->VeiculoFabricanteId.')">';
+										echo '<option value="0">Escolha um ano</option>';
+
+										foreach($anosFIPE as &$ano)
+										{
+											$anoSelecionado = false;
+											if($ano->AnoModelo == $anuncio->Veiculo->AnoModelo and $ano->Combustivel->Nome == $anuncio->Veiculo->Combustivel->NomeFIPE)
+												$anoSelecionado = true;
+											echo '<option value="'.$ano->AnoModelo.'-'.$ano->Combustivel->Nome.'"' . ($anoSelecionado ? ' selected ':'') . ' >'.str_replace('32000','Zero KM',$ano->AnoModelo).' '.$ano->Combustivel->Nome.'  </option>';
+										}
+										echo ' </select>';
+									}
+									else 
+									{
+								?>
+										<select name="ano" id="ano" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Ano"   autocomplete="off" style="margin-top:10px" data-role="none">
+											<option value="">
+												ANO
+											</option>
+										</select>
+								<?php
+									}
+								?>
+							</div>	
+							<div class="form-group" id="modelo_container">
+							<?php
+								if($editar and $totalModelosFIPE > 0)
+								{
+									echo '<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control"  onChange="" placeholder="Modelo" style="margin-top:10px">';
+									echo '<option value="0">Escolha um modelo</option>';		
+									foreach($modelosFIPE as &$modelo)
+									{
+										//echo  $anuncio->Veiculo->Modelo->VeiculoModeloId . ' <---> ' . $modelo->VeiculoModeloId . '<br/>';
+										$modeloSelecionado = false;
+										if($anuncio->Veiculo->Modelo->VeiculoModeloId == $modelo->VeiculoModeloId)
+											$modeloSelecionado = true;
+										echo '<option value="'.$modelo->VeiculoModeloId.'"' . ($modeloSelecionado ? ' selected ':'')  .   '>'.$modelo->Nome.'  </option>';
+									}
+									echo ' </select>';
+								}
+								else 
+								{
+							?>
+									<select name="modelo" id="modelo" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto" class="form-control" placeholder="Modelo" autocomplete="off" style="margin-top:10px" data-role="none">
+										<option value="">MODELO</option>
+									</select>
+							<?php
+								}
+							?>
+							</div>
+							<div class="form-group">
+								<input required type="number" style="background-color: #ebebeb; border-radius: 0; min-height: 45px; max-width: 350px !important; margin:0 auto"  name="km" id="km" class="form-control" placeholder="KM">
+							</div>
+							<div class="form-group" style="margin-bottom: 6px !important;">
+								<button style="background-color:#ffbb00; color:white; border:none; border-radius: 0; width: 100%; font-weight: 800; font-size: 1.6rem; padding-top: 1em; padding-bottom: 1em;" type="submit" id="botao-cadastrar">CADASTRAR-SE</button>
+							</div>
+						</form>
 					</div>
 				</div>
-			</div>
-	    </div>
-	</section>
-
-	<section class="hidden-lg hidden-md text-center">
-	    <div class="banner_02" style="padding-top:5em; background-image: url(assets/img/bg/slide_01.png); background-size: cover; background-position: center;">
-	    	<div class="container">
-				<div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 3.7em;" >
-					<div class="col-md-6 col-sm-12 col-xs-12">
-					<h3 style="color:white; font-family:'Helvetica Neue Light', sans-serif; padding-top: 1em;">Venda seu carro</h3>
-					<h1 style="color:white; font-family:'Helvetica Neue Bold', sans-serif; font-weight: 800; font-size: 3.5rem; ">EM ATÉ 1H!</h1>
-					<a href="lead-cotacao-gratis.php"><button style="background-image: url(assets/img/btnCadastro.png) !important; background-position: center; background-size: contain; border-radius: 0; color:white; padding-top: 1em;padding-bottom: 1em; font-size:1.6rem; font-weight: 900; width: 100%; margin-bottom: 1em;" class="btn btn default">VENDER MEU CARRO!</button></a>
-					</div>
-
-					<div class="col-md-6 col-sm-12 col-xs-12" >
-						<iframe width="100%" height="315" src="https://www.youtube.com/embed/PgX-fii2YaM" frameborder="0" allowfullscreen></iframe>
-					</div>
 				</div>
 			</div>
-	    </div>
 	</section>
+
+
 		
 	<div class="section white ha-waypoint" data-animate-down="ha-header-color" data-animate-up="ha-header-hide" >
 		<div class="container">
